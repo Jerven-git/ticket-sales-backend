@@ -23,6 +23,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::prefix('v1')->group(function () {
     Route::prefix('sign-up')->group(function () {
         Route::post('/', [UserController::class, 'store']);
+        Route::patch('/update/{id}', [UserController::class, 'update']);
     });
 });
 

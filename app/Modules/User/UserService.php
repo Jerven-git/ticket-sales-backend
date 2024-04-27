@@ -17,7 +17,7 @@ class UserService implements UserServiceInterface
     /**
      * Create new User
      * 
-     * @param array $userData
+     * @param array $userData, Credentials of the user
      * 
      * $userData Contains the user data
      * 
@@ -26,5 +26,18 @@ class UserService implements UserServiceInterface
     public function create(array $userData): User|array
     {
         return $this->userRepository->create($userData);
+    }
+
+    /**
+     * Update User
+     * 
+     * @param User $user, The user who initiated the update
+     * @param array $userData Credentials of the user
+     * 
+     * @param array $userData
+     */
+    public function update(User $user, array $userData): User|array
+    {
+        return $this->userRepository->update($user->id, $userData);
     }
 }
