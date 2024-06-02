@@ -5,18 +5,17 @@ namespace App\Repository\Eloquent;
 use App\Repository\Eloquent\Base\BaseRepository;
 use App\Repository\UserRepositoryInterface;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 
 class UserRepository extends BaseRepository implements UserRepositoryInterface
 {
-    protected $request;
+    protected $user;
 
-    public function __construct(User $user, Request $request)
+    public function __construct(User $user)
     {
         parent::__construct($user);
-        $this->request = $request;
+        $this->user = $user;
     }
 
     public function create(array $userData): User|array
@@ -57,7 +56,7 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
             return ['errors' => $validator->errors()->all()];
         }
 
-        $user = User::find($id);
+        $user = $this->user->find($id); // Use injected user instance
      
         $isSuccess = DB::transaction(function () use ($user, $userData) {
             $user->update($userData);
