@@ -13,6 +13,7 @@ class UserController extends Controller
      * @var UserServiceInterface $userService
      */
     protected UserServiceInterface $userService;
+    
     /**
      * User Controller Constructor
      * 

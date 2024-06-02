@@ -8,6 +8,10 @@ use App\Repository\UserRepositoryInterface;
 use App\Repository\Eloquent\UserRepository;
 use App\Modules\Auth\AuthServiceInterface;
 use App\Modules\Auth\AuthService;
+use App\Modules\Event\EventService;
+use App\Modules\Event\EventServiceInterface;
+use App\Repository\EventRepositoryInterface;
+use App\Repository\Eloquent\EventRepository;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -22,11 +26,13 @@ class RepositoryServiceProvider extends ServiceProvider
          */
         $this->app->bind(UserServiceInterface::class, UserService::class);
         $this->app->bind(AuthServiceInterface::class, AuthService::class);
+        $this->app->bind(EventServiceInterface::class, EventService::class);
 
         /**
          * Repositories registered
          */
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
+        $this->app->bind(EventRepositoryInterface::class, EventRepository::class);
     }
 
     /**
