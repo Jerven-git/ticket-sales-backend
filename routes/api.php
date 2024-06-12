@@ -30,8 +30,4 @@ Route::prefix('v1')->group(function () {
     Route::prefix('event')->group(function () {
         Route::post('/', [EventController::class, 'store']);
     });
-
-    Route::get('/test', function () {
-        return 'This is a test route';
-    });
 });
