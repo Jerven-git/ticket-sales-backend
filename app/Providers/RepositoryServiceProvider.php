@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Modules\Media\MediaService;
 use App\Modules\User\UserServiceInterface;
 use App\Modules\User\UserService;
 use App\Repository\UserRepositoryInterface;
@@ -27,6 +28,10 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(UserServiceInterface::class, UserService::class);
         $this->app->bind(AuthServiceInterface::class, AuthService::class);
         $this->app->bind(EventServiceInterface::class, EventService::class);
+        
+        $this->app->singleton(MediaService::class, function ($app) {
+            return new MediaService();
+        });
 
         /**
          * Repositories registered

@@ -7,16 +7,19 @@ use Illuminate\Support\Collection;
 use App\Repository\EventRepositoryInterface;
 use Illuminate\Support\Facades\DB;
 use App\Models\Event;
+use App\Modules\Media\MediaService;
 
 
 class EventRepository extends BaseRepository implements EventRepositoryInterface
 {
     protected $event;
+    protected $mediaService;
 
-    public function __construct(Event $event)
+    public function __construct(Event $event, MediaService $mediaService)
     {
         parent::__construct($event);
         $this->event = $event;
+        $this->mediaService = $mediaService;
     }
 
     public function create(array $eventData, $eventTicketsModel): Collection
@@ -24,20 +27,25 @@ class EventRepository extends BaseRepository implements EventRepositoryInterface
        $event_creation = DB::transaction(function () use ($eventData, $eventTicketsModel) {
             $event = $this->event::create([
                 'title' => $eventData['event_title'],
+                'event_type' => $eventData['event_type'],
                 'location' => $eventData['event_location'],
+                'event_link' => $eventData['event_link'],
+                'event_note' => $eventData['event_note'],
                 'description' => $eventData['event_description'],
-                'address' => $eventData['event_address'],
                 'refund_policy' => $eventData['event_refund'],
                 'category' => $eventData['event_category'],
-                'status' => $eventData['event_status'],
+                'event_sub_category' => $eventData['event_sub_category'],
                 'code' => $eventData['event_code'],
                 'organizer' => $eventData['event_organizer'],
                 'start_date' => $eventData['event_start_date'],
                 'start_time' => $eventData['event_start_time'],
                 'end_date' => $eventData['event_end_date'],
                 'end_time' => $eventData['event_end_time'],
-                'capacity' => $eventData['event_capacity'],
             ]);
+
+            foreach ($eventData['event_image'] as $image) {
+                $this->mediaService->upload($image, $event);
+            }
 
             $eventId = $event->id;
 
@@ -46,6 +54,8 @@ class EventRepository extends BaseRepository implements EventRepositoryInterface
                 'name' => $eventData['ticket_name'],
                 'price' => $eventData['ticket_price'],
                 'quantity' => $eventData['ticket_quantity'],
+                'ticket_description' => $eventData['ticket_description'],
+                'ticket_per_user' => $eventData['ticket_per_user'],
                 'sale_start_date' => $eventData['sale_start_date'],
                 'sale_start_time' => $eventData['sale_start_time'],
                 'sale_end_date' => $eventData['sale_end_date'],
