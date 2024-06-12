@@ -19,17 +19,16 @@ return new class extends Migration
             $table->string('event_link')->nullable();
             $table->text('event_note')->nullable();
             $table->text('event_description');
-            $table->text('event_address');
             $table->string('event_refund');
             $table->string('event_category');
-            $table->string('event_status');
+            $table->string('event_sub_category');
             $table->string('event_code')->nullable();
             $table->string('event_organizer');
-            $table->date('start_date');
-            $table->date('start_time');
-            $table->date('end_date');
-            $table->date('end_time');
-            $table->integer('event_capacity');
+            $table->text('event_image');
+            $table->date('event_start_date');
+            $table->time('event_start_time');
+            $table->date('event_end_date');
+            $table->time('event_end_time');
             $table->timestamps();
         });
     }

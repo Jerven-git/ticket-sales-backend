@@ -26,8 +26,14 @@ RUN yes | pecl install xdebug \
     && echo "xdebug.remote_autostart=off" >> /usr/local/etc/php/conf.d/xdebug.ini
 
 COPY . /var/www/html/
-RUN composer update \
-    && composer install
+# RUN composer update \
+#     && composer install
+
+# Set COMPOSER_ALLOW_SUPERUSER environment variable and clear vendor directory
+RUN export COMPOSER_ALLOW_SUPERUSER=1 && \
+    rm -rf /var/www/html/vendor/* && \
+    composer update && \
+    composer install
 
 # CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port", "8000"]
 

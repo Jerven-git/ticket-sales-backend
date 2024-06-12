@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\EventController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,8 +26,8 @@ Route::prefix('v1')->group(function () {
         Route::post('/', [UserController::class, 'store']);
         Route::patch('/update/{id}', [UserController::class, 'update']);
     });
-});
 
-Route::get('/test', function () {
-    return 'This is a test route';
+    Route::prefix('event')->group(function () {
+        Route::post('/', [EventController::class, 'store']);
+    });
 });

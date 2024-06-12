@@ -1,0 +1,38 @@
+# Ignore node_modules directory
+node_modules/
+
+# Ignore vendor directory (since it will be installed inside the container)
+vendor/
+
+# Ignore Git-related files
+.git/
+.gitignore
+
+# Ignore environment variable files
+.env
+.env.*
+
+# Ignore log files and temporary storage
+storage/logs/
+storage/framework/
+
+# Ignore documentation and markdown files (except README.md)
+*.md
+!README.md
+docs/
+
+# Ignore IDE and editor configuration files
+.editorconfig
+.idea/
+.vscode/
+
+# Ignore OS-generated files
+**/thumbs.db
+**/.DS_Store
+
+# Ignore PHPUnit cache and coverage files
+.phpunit.result.cache
+tests/coverage/
+
+# Ignore any other temporary files
+tmp/

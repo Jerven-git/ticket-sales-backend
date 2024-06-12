@@ -11,23 +11,29 @@ class Event extends Model
 
     protected $fillable = [
         'event_title',
+        'event_type',
         'event_location',
+        'event_link',
+        'event_note',
+        'event_description',
+        'event_refund',
+        'event_category',
+        'event_sub_category',
+        'event_code',
+        'event_organizer',
         'start_date',
         'start_time',
         'end_date',
-        'end_time',
-        'event_description',
-        'event_address',
-        'event_refund',
-        'event_category',
-        'event_status',
-        'event_code',
-        'event_organizer',
-        'event_capacity'
+        'end_time'
     ];
 
     public function tickets()
     {
         return $this->hasMany(EventTickets::class);
+    }
+
+    public function media()
+    {
+        return $this->morphMany(Media::class, 'imageable');
     }
 }
