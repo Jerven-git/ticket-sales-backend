@@ -24,7 +24,6 @@ return new class extends Migration
             $table->string('event_sub_category');
             $table->string('event_code')->nullable();
             $table->string('event_organizer');
-            $table->text('event_image');
             $table->date('event_start_date');
             $table->time('event_start_time');
             $table->date('event_end_date');
