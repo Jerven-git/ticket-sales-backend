@@ -43,8 +43,10 @@ class EventRepository extends BaseRepository implements EventRepositoryInterface
                 'end_time' => $eventData['event_end_time'],
             ]);
 
-            foreach ($eventData['event_image'] as $image) {
-                $this->mediaService->upload($image, $event);
+            if (isset($eventData['event_image']) && is_array($eventData['event_image'])) {
+                foreach ($eventData['event_image'] as $image) {
+                    $this->mediaService->upload($image, $event);
+                }
             }
 
             $eventId = $event->id;
