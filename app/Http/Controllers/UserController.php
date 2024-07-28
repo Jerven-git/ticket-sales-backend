@@ -32,9 +32,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        // Use only() method to specify multiple keys
         $userData = $request->only(['first_name', 'last_name', 'email', 'password']);
-    
         $user = $this->userService->create($userData);
     
         if (isset($user['errors'])) {
