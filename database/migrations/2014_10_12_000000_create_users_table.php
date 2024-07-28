@@ -18,6 +18,12 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('webiste_link')->nullable();
+            $table->text('description')->nullable();
+            $table->text('city')->nullable();
+            $table->text('state')->nullable();
+            $table->text('country')->nullable();
+            $table->text('postal_code')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

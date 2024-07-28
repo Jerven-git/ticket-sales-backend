@@ -23,7 +23,11 @@ Route::prefix('api')->group(function () {
             Route::post('logout', [AuthenticationController::class, 'logout'])->name('logout');
             Route::post('forgot-password', [AuthenticationController::class, 'forgotPassword'])->name('forgotPassword');
             Route::post('reset-password', [AuthenticationController::class,'resetPassword'])->name('resetPassword');
+            Route::get('check', [AuthenticationController::class, 'checkAuth']);
         });
     });
 
+    Route::get('/csrf-token', function () {
+        return response()->json(['token' => csrf_token()]);
+    });
 });

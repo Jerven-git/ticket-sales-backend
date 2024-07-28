@@ -7,6 +7,7 @@ use App\Repository\UserRepositoryInterface;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class UserRepository extends BaseRepository implements UserRepositoryInterface
 {
@@ -27,20 +28,19 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
             'password' => 'required|min:6',
         ];
 
-        // Validate data
         $validator = Validator::make($userData, $rules);
 
-        // Check if validation fails
         if ($validator->fails()) {
-            // Handle validation failure, return error messages
             return ['errors' => $validator->errors()->all()];
         }
 
-        // Validation passed, create user
+        $userData['password'] = Hash::make($userData['password']);
+
         $user = User::create($userData);
 
         return $user;
     }
+
     public function update(int $id, array $userData): User|array
     {
         $rules = [

@@ -16,18 +16,19 @@ use App\Http\Controllers\EventController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-
 Route::prefix('v1')->group(function () {
     Route::prefix('sign-up')->group(function () {
         Route::post('/', [UserController::class, 'store']);
         Route::patch('/update/{id}', [UserController::class, 'update']);
     });
 
-    Route::prefix('event')->group(function () {
-        Route::post('/', [EventController::class, 'store']);
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::get('/user', function (Request $request) {
+            return $request->user();
+        });
+
+        Route::prefix('event')->group(function () {
+            Route::post('/', [EventController::class, 'store']);
+        });
     });
 });
