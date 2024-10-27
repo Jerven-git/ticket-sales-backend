@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AuthenticationController;
+use Laravel\Sanctum\Http\Controllers\CsrfCookieController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,19 +16,21 @@ use App\Http\Controllers\AuthenticationController;
 |
 */
 
-Route::prefix('api')->group(function () {
+Route::middleware('web')->get('/api/sanctum/csrf-cookie', [CsrfCookieController::class, 'show']);
 
+Route::prefix('api')->group(function () {
     Route::prefix('v1')->group(function () {
         Route::prefix('auth')->group(function () {
-            Route::post('login', [AuthenticationController::class, 'authenticate'])->name('login');
-            Route::post('logout', [AuthenticationController::class, 'logout'])->name('logout');
-            Route::post('forgot-password', [AuthenticationController::class, 'forgotPassword'])->name('forgotPassword');
-            Route::post('reset-password', [AuthenticationController::class,'resetPassword'])->name('resetPassword');
-            Route::get('check', [AuthenticationController::class, 'checkAuth']);
-        });
-    });
+            // Protected routes that require authentication
+            Route::middleware('auth:sanctum')->group(function () {
+                Route::post('logout', [AuthenticationController::class, 'logout'])->name('logout');
+                Route::get('check', [AuthenticationController::class, 'checkAuth']);
+            });
 
-    Route::get('/csrf-token', function () {
-        return response()->json(['token' => csrf_token()]);
+            // Routes that do not require authentication
+            Route::post('login', [AuthenticationController::class, 'authenticate'])->name('login');
+            Route::post('forgot-password', [AuthenticationController::class, 'forgotPassword'])->name('forgotPassword');
+            Route::post('reset-password', [AuthenticationController::class, 'resetPassword'])->name('resetPassword');
+        });
     });
 });
