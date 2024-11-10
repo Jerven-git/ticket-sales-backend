@@ -37,6 +37,6 @@ RUN export COMPOSER_ALLOW_SUPERUSER=1 && \
 
 # CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port", "8000"]
 
-CMD sh -c "composer install && php artisan serve --host=0.0.0.0 --port 8000"
+CMD sh -c "composer install && php artisan serve --host=0.0.0.0 --port 9000"
 
 EXPOSE 9000
