@@ -56,11 +56,15 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
             return ['errors' => $validator->errors()->all()];
         }
 
-        $user = $this->user->find($id); // Use injected user instance
-     
+        $user = $this->user->find($id);
+
+        if (isset($userData['password'])) {
+            $userData['password'] = Hash::make($userData['password']);
+        }
+
         $isSuccess = DB::transaction(function () use ($user, $userData) {
             $user->update($userData);
-            return true; // Transaction successful
+            return true;
         });
 
         return ['success' => $isSuccess];

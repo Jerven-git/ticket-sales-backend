@@ -105,10 +105,9 @@ class AuthenticationController extends Controller
     {
         $email = $request->input('email');
         $password = $request->input('password');
-        $passwordConfirmation = $request->input('password');
         $token = $request->input('token');
 
-        $isSuccess = $this->authService->resetPassword($email, $password, $passwordConfirmation, $token);
+        $isSuccess = $this->authService->resetPassword($email, $token, $password);
 
         if ($isSuccess) {
             return response()->json(['message' => 'Password reset successfully'], 200);

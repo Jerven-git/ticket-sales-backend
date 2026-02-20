@@ -18,6 +18,12 @@ use App\Modules\Organizer\OrganizerServiceInterface;
 use App\Modules\Organizer\OrganizerService;
 use App\Repository\OrganizerRepositoryInterface;
 use App\Repository\Eloquent\OrganizerRepository;
+use App\Modules\Order\OrderServiceInterface;
+use App\Modules\Order\OrderService;
+use App\Repository\OrderRepositoryInterface;
+use App\Repository\Eloquent\OrderRepository;
+use App\Modules\Payment\PaymentServiceInterface;
+use App\Modules\Payment\StripePaymentService;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -33,6 +39,8 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(AuthServiceInterface::class, AuthService::class);
         $this->app->bind(EventServiceInterface::class, EventService::class);
         $this->app->bind(OrganizerServiceInterface::class, OrganizerService::class);
+        $this->app->bind(OrderServiceInterface::class, OrderService::class);
+        $this->app->bind(PaymentServiceInterface::class, StripePaymentService::class);
 
         
         $this->app->singleton(MediaService::class, function ($app) {
@@ -45,6 +53,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
         $this->app->bind(EventRepositoryInterface::class, EventRepository::class);
         $this->app->bind(OrganizerRepositoryInterface::class, OrganizerRepository::class);
+        $this->app->bind(OrderRepositoryInterface::class, OrderRepository::class);
     }
 
     /**
