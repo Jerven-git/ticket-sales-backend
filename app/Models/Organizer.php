@@ -19,8 +19,13 @@ class Organizer extends Model
         'status'
     ];
 
+    public function events()
+    {
+        return $this->hasMany(Event::class);
+    }
+
     public function media()
     {
-        return $this->morpMany(Media::class, 'imageable');
+        return $this->morphMany(Media::class, 'imageable');
     }
 }

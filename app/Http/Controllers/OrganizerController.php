@@ -9,33 +9,42 @@ use App\Modules\Organizer\OrganizerServiceInterface;
 
 class OrganizerController extends Controller
 {
-    /**
-     * Organizer Module
-     * @var OrganizerServiceInterface $organizerService
-     */
     protected OrganizerServiceInterface $organizerService;
 
-     /**
-      * Organizer Controller Constructor
-      *
-      * @param OrganizerServiceInterface $organizerService
-      */
-      public function __construct(OrganizerServiceInterface $organizerService)
-      {
+    public function __construct(OrganizerServiceInterface $organizerService)
+    {
         $this->organizerService = $organizerService;
-      }
+    }
+
+    public function index()
+    {
+        $organizers = $this->organizerService->getAll();
+
+        return response()->json(['data' => $organizers], 200);
+    }
+
+    public function show(int $id)
+    {
+        $organizer = $this->organizerService->findById($id);
+
+        if (!$organizer) {
+            return response()->json(['error' => 'Organizer not found'], 404);
+        }
+
+        return response()->json(['data' => $organizer], 200);
+    }
+
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'organizer_name' => 'required|string|max:255',
-            'organizer_email' => 'required|string|max:255',
-            'organizer_website' => 'required|string|max:255',
-            'organizer_bio' => 'required|string',
-            'organizer_facebook_link' => 'required|string|max:255',
-            'organizer_twitter_link' => 'required|string|max:255',
-            'organizer_instagram_link' => 'required|string|max:255',
-            'organizer_status' => 'required|boolean',
-            'organizer_photo' => 'required|file|mimes:jpeg,png,jpg,gif|max:2048',
+            'organizer_website' => 'nullable|string|max:255',
+            'organizer_bio' => 'nullable|string',
+            'organizer_facebook_link' => 'nullable|string|max:255',
+            'organizer_twitter_link' => 'nullable|string|max:255',
+            'organizer_instagram_link' => 'nullable|string|max:255',
+            'status' => 'required|boolean',
+            'organizer_photo' => 'nullable|file|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         if ($validator->fails()) {
@@ -44,13 +53,12 @@ class OrganizerController extends Controller
 
         $organizerData = $request->only([
             'organizer_name',
-            'organizer_email',
             'organizer_website',
             'organizer_bio',
             'organizer_facebook_link',
             'organizer_twitter_link',
             'organizer_instagram_link',
-            'organizer_status',
+            'status',
             'organizer_photo'
         ]);
 
@@ -64,6 +72,50 @@ class OrganizerController extends Controller
             return response()->json(['error' => $organizer['error']], 422);
         }
 
-        return response()->json(['message' => 'Organizer created successfully'], 201);
+        return response()->json(['message' => 'Organizer created successfully', 'data' => $organizer], 201);
+    }
+
+    public function update(Request $request, int $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'organizer_name' => 'sometimes|string|max:255',
+            'organizer_website' => 'nullable|string|max:255',
+            'organizer_bio' => 'nullable|string',
+            'organizer_facebook_link' => 'nullable|string|max:255',
+            'organizer_twitter_link' => 'nullable|string|max:255',
+            'organizer_instagram_link' => 'nullable|string|max:255',
+            'status' => 'sometimes|boolean',
+            'organizer_photo' => 'nullable|file|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 422);
+        }
+
+        $organizerData = $request->only([
+            'organizer_name',
+            'organizer_website',
+            'organizer_bio',
+            'organizer_facebook_link',
+            'organizer_twitter_link',
+            'organizer_instagram_link',
+            'status',
+            'organizer_photo'
+        ]);
+
+        if ($request->hasFile('organizer_photo')) {
+            $organizerData['organizer_photo'] = $request->file('organizer_photo');
+        }
+
+        $organizer = $this->organizerService->update($id, $organizerData);
+
+        return response()->json(['message' => 'Organizer updated successfully', 'data' => $organizer], 200);
+    }
+
+    public function destroy(int $id)
+    {
+        $this->organizerService->delete($id);
+
+        return response()->json(['message' => 'Organizer deleted successfully'], 200);
     }
 }

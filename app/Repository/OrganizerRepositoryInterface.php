@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Modules\Organizer;
+namespace App\Repository;
 
 use App\Models\Organizer;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 
-interface OrganizerServiceInterface
+interface OrganizerRepositoryInterface
 {
     public function create(array $organizerData): Collection;
 
